@@ -68,6 +68,7 @@ namespace PieLaunch.Windows
         private const uint GW_OWNER = 4;
         private const uint SWP_NOZORDER = 0x0004;
         private const uint SWP_SHOWWINDOW = 0x0040;
+        private const uint SWP_FRAMECHANGED = 0x0020;
         private const int MONITOR_DEFAULTTONEAREST = 2;
 
         [StructLayout(LayoutKind.Sequential)]
@@ -303,6 +304,7 @@ namespace PieLaunch.Windows
         public static void RestoreWindow(IntPtr hWnd)
         {
             ShowWindow(hWnd, SW_SHOWNORMAL);
+            SetForegroundWindow(hWnd);
         }
 
         public static bool IsWindowMaximized(IntPtr hWnd)
@@ -317,5 +319,228 @@ namespace PieLaunch.Windows
         {
             return IsIconic(hWnd);
         }
+
+        #region Window Positioning Methods
+        private static RECT GetMonitorWorkArea(IntPtr hWnd)
+        {
+            IntPtr hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
+            MONITORINFO monitorInfo = new MONITORINFO();
+            monitorInfo.cbSize = Marshal.SizeOf(monitorInfo);
+            GetMonitorInfo(hMonitor, ref monitorInfo);
+            return monitorInfo.rcWork;
+        }
+
+        public static void SnapWindowToLeftHalf(IntPtr hWnd)
+        {
+            // First restore the window if it's minimized
+            if (IsIconic(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+            // Also restore if maximized
+            else if (IsWindowMaximized(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+
+            RECT workArea = GetMonitorWorkArea(hWnd);
+            int width = (workArea.Right - workArea.Left) / 2;
+            int height = workArea.Bottom - workArea.Top;
+
+            SetWindowPos(hWnd, IntPtr.Zero,
+                workArea.Left,
+                workArea.Top,
+                width,
+                height,
+                SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
+
+            SetForegroundWindow(hWnd);
+        }
+
+        public static void SnapWindowToRightHalf(IntPtr hWnd)
+        {
+            // First restore the window if it's minimized
+            if (IsIconic(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+            // Also restore if maximized
+            else if (IsWindowMaximized(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+
+            RECT workArea = GetMonitorWorkArea(hWnd);
+            int width = (workArea.Right - workArea.Left) / 2;
+            int height = workArea.Bottom - workArea.Top;
+            int x = workArea.Left + width;
+
+            SetWindowPos(hWnd, IntPtr.Zero,
+                x,
+                workArea.Top,
+                width,
+                height,
+                SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
+
+            SetForegroundWindow(hWnd);
+        }
+
+        public static void SnapWindowToTopHalf(IntPtr hWnd)
+        {
+            // Restore the window if it's minimized or maximized
+            if (IsIconic(hWnd) || IsWindowMaximized(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+
+            RECT workArea = GetMonitorWorkArea(hWnd);
+            int width = workArea.Right - workArea.Left;
+            int height = (workArea.Bottom - workArea.Top) / 2;
+
+            SetWindowPos(hWnd, IntPtr.Zero,
+                workArea.Left,
+                workArea.Top,
+                width,
+                height,
+                SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
+
+            SetForegroundWindow(hWnd);
+        }
+
+        public static void SnapWindowToBottomHalf(IntPtr hWnd)
+        {
+            // Restore the window if it's minimized or maximized
+            if (IsIconic(hWnd) || IsWindowMaximized(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+
+            RECT workArea = GetMonitorWorkArea(hWnd);
+            int width = workArea.Right - workArea.Left;
+            int height = (workArea.Bottom - workArea.Top) / 2;
+            int y = workArea.Top + height;
+
+            SetWindowPos(hWnd, IntPtr.Zero,
+                workArea.Left,
+                y,
+                width,
+                height,
+                SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
+
+            SetForegroundWindow(hWnd);
+        }
+
+        public static void SnapWindowToTopLeft(IntPtr hWnd)
+        {
+            // First restore the window if it's minimized
+            if (IsIconic(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+            // Also restore if maximized
+            else if (IsWindowMaximized(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+
+            RECT workArea = GetMonitorWorkArea(hWnd);
+            int width = (workArea.Right - workArea.Left) / 2;
+            int height = (workArea.Bottom - workArea.Top) / 2;
+
+            SetWindowPos(hWnd, IntPtr.Zero,
+                workArea.Left,
+                workArea.Top,
+                width,
+                height,
+                SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
+
+            SetForegroundWindow(hWnd);
+        }
+
+        public static void SnapWindowToTopRight(IntPtr hWnd)
+        {
+            // First restore the window if it's minimized
+            if (IsIconic(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+            // Also restore if maximized
+            else if (IsWindowMaximized(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+
+            RECT workArea = GetMonitorWorkArea(hWnd);
+            int width = (workArea.Right - workArea.Left) / 2;
+            int height = (workArea.Bottom - workArea.Top) / 2;
+            int x = workArea.Left + width;
+
+            SetWindowPos(hWnd, IntPtr.Zero,
+                x,
+                workArea.Top,
+                width,
+                height,
+                SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
+
+            SetForegroundWindow(hWnd);
+        }
+
+        public static void SnapWindowToBottomLeft(IntPtr hWnd)
+        {
+            // First restore the window if it's minimized
+            if (IsIconic(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+            // Also restore if maximized
+            else if (IsWindowMaximized(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+
+            RECT workArea = GetMonitorWorkArea(hWnd);
+            int width = (workArea.Right - workArea.Left) / 2;
+            int height = (workArea.Bottom - workArea.Top) / 2;
+            int y = workArea.Top + height;
+
+            SetWindowPos(hWnd, IntPtr.Zero,
+                workArea.Left,
+                y,
+                width,
+                height,
+                SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
+
+            SetForegroundWindow(hWnd);
+        }
+
+        public static void SnapWindowToBottomRight(IntPtr hWnd)
+        {
+            // First restore the window if it's minimized
+            if (IsIconic(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+            // Also restore if maximized
+            else if (IsWindowMaximized(hWnd))
+            {
+                ShowWindow(hWnd, SW_RESTORE);
+            }
+
+            RECT workArea = GetMonitorWorkArea(hWnd);
+            int width = (workArea.Right - workArea.Left) / 2;
+            int height = (workArea.Bottom - workArea.Top) / 2;
+            int x = workArea.Left + width;
+            int y = workArea.Top + height;
+
+            SetWindowPos(hWnd, IntPtr.Zero,
+                x,
+                y,
+                width,
+                height,
+                SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
+
+            SetForegroundWindow(hWnd);
+        }
+        #endregion
     }
 }

@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PieLaunch"
         mc:Ignorable="d"
-        Title="PieLaunch" Height="700" Width="900"
+        Title="PieLaunch" Height="750" Width="900"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -86,9 +87,73 @@
                     IsEnabled="False"/>
         </StackPanel>
 
-        <Separator Grid.Row="3" Margin="0,10"/>
+        <StackPanel Grid.Row="3" 
+            Orientation="Horizontal" 
+            HorizontalAlignment="Right" 
+            Margin="0,10,0,0">
+            <TextBlock Text="Snap Window:" 
+               VerticalAlignment="Center" 
+               Margin="0,0,10,0"/>
+            <Button x:Name="SnapLeftButton" 
+            Content="Left Half" 
+            Width="70" 
+            Height="25"
+            Click="SnapLeftButton_Click"
+            IsEnabled="False"
+            Margin="0,0,5,0"/>
+            <Button x:Name="SnapRightButton" 
+            Content="Right Half" 
+            Width="70" 
+            Height="25"
+            Click="SnapRightButton_Click"
+            IsEnabled="False"
+            Margin="0,0,5,0"/>
+            <Button x:Name="SnapTopButton" 
+            Content="Top Half" 
+            Width="70" 
+            Height="25"
+            Click="SnapTopButton_Click"
+            IsEnabled="False"
+            Margin="0,0,5,0"/>
+            <Button x:Name="SnapBottomButton" 
+            Content="Bottom Half" 
+            Width="80" 
+            Height="25"
+            Click="SnapBottomButton_Click"
+            IsEnabled="False"
+            Margin="0,0,5,0"/>
+            <Button x:Name="SnapTopLeftButton" 
+            Content="Top Left" 
+            Width="70" 
+            Height="25"
+            Click="SnapTopLeftButton_Click"
+            IsEnabled="False"
+            Margin="0,0,5,0"/>
+            <Button x:Name="SnapTopRightButton" 
+            Content="Top Right" 
+            Width="70" 
+            Height="25"
+            Click="SnapTopRightButton_Click"
+            IsEnabled="False"
+            Margin="0,0,5,0"/>
+            <Button x:Name="SnapBottomLeftButton" 
+            Content="Bottom Left" 
+            Width="80" 
+            Height="25"
+            Click="SnapBottomLeftButton_Click"
+            IsEnabled="False"
+            Margin="0,0,5,0"/>
+            <Button x:Name="SnapBottomRightButton" 
+            Content="Bottom Right" 
+            Width="85" 
+            Height="25"
+            Click="SnapBottomRightButton_Click"
+            IsEnabled="False"/>
+        </StackPanel>
 
-        <Grid Grid.Row="4">
+        <Separator Grid.Row="4" Margin="0,10"/>
+
+        <Grid Grid.Row="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -136,27 +201,5 @@
                         IsEnabled="False"/>
             </Grid>
         </Grid>
-
-        <Separator Grid.Row="5" Margin="0,10,0,5"/>
-
-        <TextBlock Grid.Row="6" 
-                   Text="Window Positioning Options (Not Implemented):" 
-                   FontSize="12" 
-                   TextWrapping="Wrap"
-                   Margin="0,0,0,10">
-            <TextBlock.ToolTip>
-                <ToolTip>
-                    <StackPanel>
-                        <TextBlock FontWeight="Bold" Text="Available Window Positioning Options:"/>
-                        <TextBlock Text="• Snap to left/right half of screen"/>
-                        <TextBlock Text="• Snap to corners (quarter screen)"/>
-                        <TextBlock Text="• Center window on screen"/>
-                        <TextBlock Text="• Custom size and position"/>
-                        <TextBlock Text="• Multi-monitor support"/>
-                        <TextBlock Text="• Cascade/Tile windows"/>
-                    </StackPanel>
-                </ToolTip>
-            </TextBlock.ToolTip>
-        </TextBlock>
     </Grid>
 </Window>

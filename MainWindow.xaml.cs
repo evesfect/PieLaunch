@@ -11,7 +11,6 @@ using System.Windows.Shapes;
 using PieLaunch.Windows;
 using System.IO;
 using System.Runtime.InteropServices;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace PieLaunch
 {
@@ -46,6 +45,16 @@ namespace PieLaunch
             MaximizeButton.IsEnabled = hasSelection;
             MinimizeButton.IsEnabled = hasSelection;
             RestoreButton.IsEnabled = hasSelection;
+
+            // Enable snap buttons
+            SnapLeftButton.IsEnabled = hasSelection;
+            SnapRightButton.IsEnabled = hasSelection;
+            SnapTopButton.IsEnabled = hasSelection;
+            SnapBottomButton.IsEnabled = hasSelection;
+            SnapTopLeftButton.IsEnabled = hasSelection;
+            SnapTopRightButton.IsEnabled = hasSelection;
+            SnapBottomLeftButton.IsEnabled = hasSelection;
+            SnapBottomRightButton.IsEnabled = hasSelection;
         }
 
         private void LaunchSelectedButton_Click(object sender, RoutedEventArgs e)
@@ -119,6 +128,134 @@ namespace PieLaunch
                 catch (Exception ex)
                 {
                     System.Windows.MessageBox.Show($"Error restoring window: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SnapLeftButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ApplicationsDataGrid.SelectedItem is WindowManager.WindowInfo selectedWindow)
+            {
+                try
+                {
+                    WindowManager.SnapWindowToLeftHalf(selectedWindow.Handle);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show($"Error snapping window: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SnapRightButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ApplicationsDataGrid.SelectedItem is WindowManager.WindowInfo selectedWindow)
+            {
+                try
+                {
+                    WindowManager.SnapWindowToRightHalf(selectedWindow.Handle);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show($"Error snapping window: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SnapTopButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ApplicationsDataGrid.SelectedItem is WindowManager.WindowInfo selectedWindow)
+            {
+                try
+                {
+                    WindowManager.SnapWindowToTopHalf(selectedWindow.Handle);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show($"Error snapping window: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SnapBottomButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ApplicationsDataGrid.SelectedItem is WindowManager.WindowInfo selectedWindow)
+            {
+                try
+                {
+                    WindowManager.SnapWindowToBottomHalf(selectedWindow.Handle);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show($"Error snapping window: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SnapTopLeftButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ApplicationsDataGrid.SelectedItem is WindowManager.WindowInfo selectedWindow)
+            {
+                try
+                {
+                    WindowManager.SnapWindowToTopLeft(selectedWindow.Handle);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show($"Error snapping window: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SnapTopRightButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ApplicationsDataGrid.SelectedItem is WindowManager.WindowInfo selectedWindow)
+            {
+                try
+                {
+                    WindowManager.SnapWindowToTopRight(selectedWindow.Handle);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show($"Error snapping window: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SnapBottomLeftButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ApplicationsDataGrid.SelectedItem is WindowManager.WindowInfo selectedWindow)
+            {
+                try
+                {
+                    WindowManager.SnapWindowToBottomLeft(selectedWindow.Handle);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show($"Error snapping window: {ex.Message}", "Error",
+                       MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SnapBottomRightButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ApplicationsDataGrid.SelectedItem is WindowManager.WindowInfo selectedWindow)
+            {
+                try
+                {
+                    WindowManager.SnapWindowToBottomRight(selectedWindow.Handle);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show($"Error snapping window: {ex.Message}", "Error",
                         MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
