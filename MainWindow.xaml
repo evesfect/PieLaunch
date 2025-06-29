@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PieLaunch"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="PieLaunch" Height="450" Width="800"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen">
     <Grid>
-
+        <TextBlock Text="PieLaunch Configuration Window" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   FontSize="16"/>
     </Grid>
 </Window>
