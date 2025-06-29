@@ -3,6 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
+using PieLaunch.Configuration;
 using Application = System.Windows.Application;
 
 namespace PieLaunch
@@ -14,10 +15,14 @@ namespace PieLaunch
     {
         private NotifyIcon? notifyIcon;
         private MainWindow? mainWindow;
+        public static ConfigManager ConfigManager { get; private set; } = null!;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            // Initialize configuration manager
+            ConfigManager = new ConfigManager();
 
             // Create system tray icon
             notifyIcon = new NotifyIcon()

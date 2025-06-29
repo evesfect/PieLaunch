@@ -5,13 +5,158 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PieLaunch"
         mc:Ignorable="d"
-        Title="PieLaunch" Height="450" Width="800"
+        Title="PieLaunch" Height="700" Width="900"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <TextBlock Text="PieLaunch Configuration Window" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center" 
-                   FontSize="16"/>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="Running Applications (Taskbar Visible)" 
+                   FontSize="16" 
+                   FontWeight="Bold" 
+                   Margin="0,0,0,10"/>
+
+        <DataGrid Grid.Row="1" 
+                  x:Name="ApplicationsDataGrid"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  SelectionMode="Single"
+                  GridLinesVisibility="Horizontal"
+                  HeadersVisibility="Column">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Window Title" 
+                                    Binding="{Binding Title}" 
+                                    Width="*"/>
+                <DataGridTextColumn Header="Process Name" 
+                                    Binding="{Binding ProcessName}" 
+                                    Width="150"/>
+                <DataGridTextColumn Header="Process ID" 
+                                    Binding="{Binding ProcessId}" 
+                                    Width="80"/>
+                <DataGridTextColumn Header="Executable Path" 
+                                    Binding="{Binding ExecutablePath}" 
+                                    Width="350"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Margin="0,10,0,0">
+            <Button x:Name="RefreshButton" 
+                    Content="Refresh" 
+                    Width="100" 
+                    Height="30" 
+                    Margin="0,0,10,0"
+                    Click="RefreshButton_Click"/>
+            <Button x:Name="LaunchSelectedButton" 
+                    Content="Launch/Focus" 
+                    Width="100" 
+                    Height="30"
+                    Click="LaunchSelectedButton_Click"
+                    IsEnabled="False"
+                    Margin="0,0,10,0"/>
+            <Button x:Name="MaximizeButton" 
+                    Content="Maximize" 
+                    Width="80" 
+                    Height="30"
+                    Click="MaximizeButton_Click"
+                    IsEnabled="False"
+                    Margin="0,0,10,0"/>
+            <Button x:Name="MinimizeButton" 
+                    Content="Minimize" 
+                    Width="80" 
+                    Height="30"
+                    Click="MinimizeButton_Click"
+                    IsEnabled="False"
+                    Margin="0,0,10,0"/>
+            <Button x:Name="RestoreButton" 
+                    Content="Restore" 
+                    Width="80" 
+                    Height="30"
+                    Click="RestoreButton_Click"
+                    IsEnabled="False"/>
+        </StackPanel>
+
+        <Separator Grid.Row="3" Margin="0,10"/>
+
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" 
+                       Text="Test Launch Application" 
+                       FontSize="14" 
+                       FontWeight="Bold" 
+                       Margin="0,0,0,5"/>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" 
+                           Text="Path:" 
+                           VerticalAlignment="Center" 
+                           Margin="0,0,10,0"/>
+
+                <TextBox Grid.Column="1" 
+                         x:Name="PathTextBox"
+                         VerticalAlignment="Center"
+                         Margin="0,0,10,0"
+                         KeyDown="PathTextBox_KeyDown"/>
+
+                <Button Grid.Column="2" 
+                        x:Name="BrowseButton"
+                        Content="Browse..."
+                        Width="80"
+                        Height="25"
+                        Margin="0,0,10,0"
+                        Click="BrowseButton_Click"/>
+
+                <Button Grid.Column="3" 
+                        x:Name="LaunchButton"
+                        Content="Launch"
+                        Width="80"
+                        Height="25"
+                        Click="LaunchButton_Click"
+                        IsEnabled="False"/>
+            </Grid>
+        </Grid>
+
+        <Separator Grid.Row="5" Margin="0,10,0,5"/>
+
+        <TextBlock Grid.Row="6" 
+                   Text="Window Positioning Options (Not Implemented):" 
+                   FontSize="12" 
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,10">
+            <TextBlock.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="Available Window Positioning Options:"/>
+                        <TextBlock Text="• Snap to left/right half of screen"/>
+                        <TextBlock Text="• Snap to corners (quarter screen)"/>
+                        <TextBlock Text="• Center window on screen"/>
+                        <TextBlock Text="• Custom size and position"/>
+                        <TextBlock Text="• Multi-monitor support"/>
+                        <TextBlock Text="• Cascade/Tile windows"/>
+                    </StackPanel>
+                </ToolTip>
+            </TextBlock.ToolTip>
+        </TextBlock>
     </Grid>
 </Window>
