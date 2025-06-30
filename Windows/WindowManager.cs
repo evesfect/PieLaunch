@@ -54,6 +54,9 @@ namespace PieLaunch.Windows
         [DllImport("user32.dll")]
         private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetForegroundWindow();
+
         private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
 
         private const int GWL_EXSTYLE = -20;

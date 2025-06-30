@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:PieLaunch"
         mc:Ignorable="d"
         Title="PieLaunch" Height="750" Width="900"
-        ShowInTaskbar="False"
-        WindowStartupLocation="CenterScreen">
+        ShowInTaskbar="True"
+        WindowStartupLocation="CenterScreen"
+        StateChanged="Window_StateChanged">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
