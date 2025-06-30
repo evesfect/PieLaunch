@@ -11,7 +11,6 @@ using System.Windows.Shapes;
 using PieLaunch.Windows;
 using System.IO;
 using System.Runtime.InteropServices;
-using PieLaunch.Commands;
 
 namespace PieLaunch
 {
@@ -20,21 +19,12 @@ namespace PieLaunch
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             InitializeComponent();
-
             ApplicationsDataGrid.SelectionChanged += ApplicationsDataGrid_SelectionChanged;
             PathTextBox.TextChanged += PathTextBox_TextChanged;
             RefreshApplicationList();
-        }
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            if (WindowState == WindowState.Minimized)
-            {
-                Hide();
-            }
         }
 
         private void RefreshApplicationList()

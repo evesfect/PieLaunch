@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Tomlyn;
@@ -11,12 +10,16 @@ namespace PieLaunch.Configuration
     {
         private readonly string _configFilePath;
         private const string ConfigFileName = "config.toml";
-        public List<KeyValuePair<string, string>> OrderedHotkeys { get; private set; } = new();
+
+        public TomlTable Configuration { get; private set; }
 
         public ConfigManager()
         {
+            // Get the directory where the executable is located
             string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
             _configFilePath = Path.Combine(exeDirectory, ConfigFileName);
+
+            Configuration = new TomlTable();
             LoadConfiguration();
         }
 
@@ -31,20 +34,11 @@ namespace PieLaunch.Configuration
                 }
 
                 string configContent = File.ReadAllText(_configFilePath);
-                var tomlModel = Toml.ToModel(configContent);
-
-                // Parse hotkeys maintaining order
-                OrderedHotkeys.Clear();
-                if (tomlModel.TryGetValue("hotkeys", out var hotkeysObj) && hotkeysObj is TomlTable hotkeysTable)
-                {
-                    foreach (var kvp in hotkeysTable)
-                    {
-                        OrderedHotkeys.Add(new KeyValuePair<string, string>(kvp.Key, kvp.Value?.ToString() ?? ""));
-                    }
-                }
+                Configuration = Toml.ToModel(configContent);
             }
             catch (Exception ex)
             {
+                // If config is corrupt or cannot be parsed, create a new default config
                 Console.WriteLine($"Error loading configuration: {ex.Message}");
                 CreateDefaultConfig();
             }
@@ -52,31 +46,54 @@ namespace PieLaunch.Configuration
 
         private void CreateDefaultConfig()
         {
-            var defaultConfig = @"# PieLaunch Configuration
+            Configuration = new TomlTable();
+            SaveConfiguration();
+        }
 
-[hotkeys]
-# Window snapping hotkeys
-snap-left = ""Win+Alt+Left""
-snap-right = ""Win+Alt+Right""
-snap-top = ""Win+Alt+Up""
-snap-bottom = ""Win+Alt+Down""
-snap-topleft = ""Win+Shift+1""
-snap-topright = ""Win+Shift+2""
-snap-bottomleft = ""Win+Shift+3""
-snap-bottomright = ""Win+Shift+4""
+        public void SaveConfiguration()
+        {
+            try
+            {
+                string tomlString = Toml.FromModel(Configuration);
+                File.WriteAllText(_configFilePath, tomlString, Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving configuration: {ex.Message}");
+                throw;
+            }
+        }
 
-# Window control hotkeys
-maximize = ""Win+Alt+M""
-minimize = ""Win+Alt+N""
-restore = ""Win+Alt+R""
+        public T GetValue<T>(string section, string key, T defaultValue = default!)
+        {
+            try
+            {
+                if (Configuration.TryGetValue(section, out var sectionObj) &&
+                    sectionObj is TomlTable sectionTable &&
+                    sectionTable.TryGetValue(key, out var value))
+                {
+                    return (T)Convert.ChangeType(value, typeof(T));
+                }
+            }
+            catch
+            {
+                // Return default value if conversion fails
+            }
 
-# Pie menu hotkeys (for future use)
-# show-pie = ""Alt+Tab""
-# save-preset = ""Alt+Shift+Tab""
-";
+            return defaultValue;
+        }
 
-            File.WriteAllText(_configFilePath, defaultConfig, Encoding.UTF8);
-            LoadConfiguration(); // Reload after creating
+        public void SetValue(string section, string key, object value)
+        {
+            if (!Configuration.ContainsKey(section))
+            {
+                Configuration[section] = new TomlTable();
+            }
+
+            if (Configuration[section] is TomlTable sectionTable)
+            {
+                sectionTable[key] = value;
+            }
         }
     }
 }
